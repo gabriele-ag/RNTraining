@@ -9,6 +9,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 
+import GameItem from '../components/GameItem';
+
 export default function HomeScreen() {
   const [message, setMessage] = useState("Non hai ancora premuto il pulsante");
   const [text, setText] = useState("");
@@ -113,21 +115,12 @@ export default function HomeScreen() {
         data={items}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <View>
-            <Text style={styles.othertitle}>{item.title}</Text>
-
-            <Text style={styles.othertitle}>Categoria: {item.category}</Text>
-
-            <Pressable
-              style={styles.deleteButton}
-              onPress={() => deleteItem(item.id)}
-            ><Text style={styles.othertitle}>Elimina</Text></Pressable>
-
-            <Pressable
-              style={styles.editButton}
-              onPress={() => editItem(item)}
-            ><Text style={styles.othertitle}>Modifica</Text></Pressable>
-          </View>
+          <GameItem
+            title={item.title}
+            category={item.category}
+            onEdit={() => editItem(item)}
+            onDelete={() => deleteItem(item.id)}
+          />
         )}
       />
 
@@ -162,8 +155,10 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
-    backgroundColor: "#444",
+    backgroundColor: "#ffffff",
     width: 300,
+    fontSize: 16,
+    fontWeight: "bold",
   },
 
   buttonText: {
