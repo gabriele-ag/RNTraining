@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
 
@@ -6,6 +6,7 @@ import { useState } from 'react';
 export default function HomeScreen() {
 
   const [message, setMessage] = useState("Non hai ancora premuto il pulsante");
+  const [text, setText] = useState("");
 
   return (
     <SafeAreaView style={styles.container}>
@@ -13,11 +14,14 @@ export default function HomeScreen() {
 
       <Text style={styles.othertitle}>Cominciamo a imparare React Native</Text>
 
+      <TextInput style={styles.input} placeholder="Scrivi qualcosa..." onChangeText={setText}></TextInput>
       <Pressable onPress={() => setMessage('EHI! MI HAI PREMUTO!')} style={styles.button}>
         <Text style={styles.buttonText}>Premi qui</Text>
       </Pressable>
 
       <Text style={styles.othertitle}>{message}</Text>
+
+      <Text style={styles.othertitle}>Hai scritto: {text}</Text>
 
     </SafeAreaView>
   );
@@ -57,4 +61,14 @@ const styles = StyleSheet.create({
   fontSize: 16,
   fontWeight: 'bold',
 },
+
+input: {
+  width: 250,
+  height: 50,
+  borderWidth: 1,
+  borderColor: '#ffffff',
+  borderRadius: 8,
+  paddingHorizontal: 12,
+  color: '#ffffff',
+}
 });
