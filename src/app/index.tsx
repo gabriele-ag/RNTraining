@@ -13,6 +13,7 @@ export default function HomeScreen() {
   const [message, setMessage] = useState("Non hai ancora premuto il pulsante");
   const [text, setText] = useState("");
   const [category, setCategory] = useState("Nessuna categoria");
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   const [items, setItems] = useState<
     {
@@ -25,6 +26,13 @@ export default function HomeScreen() {
   const deleteItem = (id: number) => {
     setItems(curItem => curItem.filter(item => item.id !== id));
   };
+
+  const editItem = (item: {id: number; title: string; category: string;}) => {
+      setText(item.title);
+      setCategory(item.category);
+      setEditingId(item.id);
+  };
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -62,22 +70,37 @@ export default function HomeScreen() {
 
 
       <Pressable
-        onPress={() => {
-          if (!text.trim()) return;
+       onPress={() => {
+        if (!text.trim()) return;
 
-          setItems((prev) => [
+        if (editingId !== null) {
+          setItems(prev =>
+            prev.map(item =>
+              item.id === editingId
+                ? {
+                    ...item,
+                    title: text.trim(),
+                    category,
+                  }
+                : item
+            )
+          );
+
+          setEditingId(null);
+        } else {
+          setItems(prev => [
             ...prev,
             {
               id: Date.now(),
               title: text.trim(),
-              category: category,
+              category,
             },
           ]);
-          setText("");
-        }}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>Premi qui</Text>
+        }
+
+        setText('');
+      }}>   
+        <Text style={styles.button}>{editingId !== null ? 'Salva modifica' : 'Aggiungi'}</Text>
       </Pressable>
 
       {/* {items.map((item, index) => (
@@ -99,6 +122,11 @@ export default function HomeScreen() {
               style={styles.deleteButton}
               onPress={() => deleteItem(item.id)}
             ><Text style={styles.othertitle}>Elimina</Text></Pressable>
+
+            <Pressable
+              style={styles.editButton}
+              onPress={() => editItem(item)}
+            ><Text style={styles.othertitle}>Modifica</Text></Pressable>
           </View>
         )}
       />
@@ -162,10 +190,17 @@ const styles = StyleSheet.create({
   },
 
   deleteButton: {
-  paddingVertical: 8,
-  paddingHorizontal: 12,
-  borderRadius: 8,
-  backgroundColor: 'rgb(211, 37, 14)',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    backgroundColor: 'rgb(211, 37, 14)',
+  },
+
+  editButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    backgroundColor: 'rgb(211, 149, 14)',
   },
 
 
