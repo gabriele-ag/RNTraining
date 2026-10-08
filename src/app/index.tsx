@@ -22,6 +22,10 @@ export default function HomeScreen() {
     }[]
   >([]);
 
+  const deleteItem = (id: number) => {
+    setItems(curItem => curItem.filter(item => item.id !== id));
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Ciao Gabriele!</Text>
@@ -90,6 +94,11 @@ export default function HomeScreen() {
             <Text style={styles.othertitle}>{item.title}</Text>
 
             <Text style={styles.othertitle}>Categoria: {item.category}</Text>
+
+            <Pressable
+              style={styles.deleteButton}
+              onPress={() => deleteItem(item.id)}
+            ><Text style={styles.othertitle}>Elimina</Text></Pressable>
           </View>
         )}
       />
@@ -104,7 +113,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "red",
+    backgroundColor: "#186d94",
     padding: 20,
   },
 
@@ -151,4 +160,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#444',
   },
+
+  deleteButton: {
+  paddingVertical: 8,
+  paddingHorizontal: 12,
+  borderRadius: 8,
+  backgroundColor: 'rgb(211, 37, 14)',
+  },
+
+
 });
